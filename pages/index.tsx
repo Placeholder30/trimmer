@@ -24,7 +24,7 @@ const Home: NextPage = () => {
     setIsLoading(true);
     try {
       const response = await fetch(`${BACKEND_URL}`, postData);
-      console.log(response);
+
       if (response.status === 200) {
         const url = await response.json();
 
