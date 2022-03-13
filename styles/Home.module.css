@@ -4,13 +4,14 @@
 
 .maincontainer {
   width: 50vw;
-  margin: 7rem auto;
+  margin: 10rem auto;
   min-width: 300px;
 }
 
 .longurl h4 {
   font-size: 1.7rem;
   margin-bottom: 1.4rem;
+  color: #264653;
 }
 .inputcontainer {
   position: relative;
@@ -60,11 +61,12 @@
 }
 
 .shorturl h4 {
-  font-size: 1.5rem;
+  font-size: 1.7rem;
   margin-bottom: 1.4rem;
+  color: #264653;
 }
 
-@media screen and (max-width: 666px) {
+@media screen and (max-width: 675px) {
   .longurl h4 {
     font-size: 1.5rem;
   }
