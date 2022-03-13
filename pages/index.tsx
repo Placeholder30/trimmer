@@ -29,7 +29,6 @@ const Home: NextPage = () => {
   };
   const handleSubmit = async () => {
     if (!validUrl.exec(longUrl)) {
-      setErrorMessage("Enter a valid URL");
       toast.error("Please enter a valid URL");
       return;
     }
