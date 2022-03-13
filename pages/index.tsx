@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
-  const BACKEND_URL = process.env.BACKEND_URL;
+  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
   const [longUrl, setLongUrl] = useState("");
   const [shortUrl, setShortUrl] = useState("");
