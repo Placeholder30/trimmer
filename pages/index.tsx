@@ -5,12 +5,19 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import styles from "../styles/Home.module.css";
 
+const validUrl = new RegExp(
+  "((http|https)://)(www.)?" +
+    "[a-zA-Z0-9@:%._\\+~#?&//=]" +
+    "{2,256}\\.[a-z]" +
+    "{2,6}\\b([-a-zA-Z0-9@:%" +
+    "._\\+~#?&//=]*)"
+);
+
 const Home: NextPage = () => {
   const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
   const [longUrl, setLongUrl] = useState("");
   const [shortUrl, setShortUrl] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const postData = {
@@ -21,6 +28,11 @@ const Home: NextPage = () => {
     body: JSON.stringify({ longUrl: longUrl.trim() }),
   };
   const handleSubmit = async () => {
+    if (!validUrl.exec(longUrl)) {
+      setErrorMessage("Enter a valid URL");
+      toast.error("Please enter a valid URL");
+      return;
+    }
     setIsLoading(true);
     try {
       const response = await fetch(`${BACKEND_URL}`, postData);
@@ -31,7 +43,7 @@ const Home: NextPage = () => {
         setShortUrl(`${BACKEND_URL}/${url.message}`);
         setIsLoading(false);
       } else {
-        setErrorMessage(
+        toast.error(
           "there was a problem processing your request, please try again"
         );
         setIsLoading(false);
