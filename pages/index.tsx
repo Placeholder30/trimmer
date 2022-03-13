@@ -2,6 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
@@ -26,13 +27,14 @@ const Home: NextPage = () => {
       console.log(response);
       if (response.status === 200) {
         const url = await response.json();
-        console.log(url);
+
         setShortUrl(`${BACKEND_URL}/${url.message}`);
         setIsLoading(false);
       } else {
         setErrorMessage(
           "there was a problem processing your request, please try again"
         );
+        setIsLoading(false);
       }
     } catch (error) {
       setIsLoading(false);
@@ -47,8 +49,12 @@ const Home: NextPage = () => {
   }, [BACKEND_URL]);
 
   const handleCopyToClipboard = () => {
+    if (!shortUrl) {
+      toast.error("shorten your url first");
+      return;
+    }
     navigator.clipboard.writeText(shortUrl).then(() => {
-      alert("succesfully copied to clipboard");
+      toast.success("Copied");
       setShortUrl("");
     });
   };
@@ -79,11 +85,27 @@ const Home: NextPage = () => {
               type="text"
               placeholder="Long url"
               value={longUrl}
+              disabled={isLoading}
               onChange={(e) => {
                 setLongUrl(e.target.value);
               }}
             />
-            <button onClick={handleSubmit}>Shorten</button>
+            {isLoading && (
+              <img
+                src="/loader.png"
+                alt=""
+                style={{
+                  position: "absolute",
+                  top: "0",
+                  right: "30px",
+                  zIndex: "5",
+                }}
+              />
+            )}
+
+            <button disabled={isLoading} onClick={handleSubmit}>
+              Shorten
+            </button>
           </div>
         </div>
         <div className={styles.shorturl}>
@@ -109,6 +131,7 @@ const Home: NextPage = () => {
               placeholder="Short url"
               value={shortUrl}
               onChange={(c) => c}
+              disabled
             />
             <button onClick={handleCopyToClipboard}>Copy</button>
           </div>
